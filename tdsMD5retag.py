@@ -10,32 +10,31 @@
 #
 # ...where the x's represent the 32 hex digits of that file's MD5 sum.
 #
-# This script assumes that its commandline [or, alternatively, that
-# its stdin, one per line] is a list of filenames in tds.md5 form and
-# then, for each file in the list:
+# This script assumes that its commandline [or, alternatively,
+# that its stdin, one per line] is a list of filenames in tds.md5
+# form and then, for each file in the list:
 #
 #  - Verifies that the file(s) in question actually exist
 #
-#  - Computes an MD5 digest for the file and verifies that it agrees
-#    with what's represented in the MD5 portion of the filename, renaming
-#    the file if necessary
+#  - Computes an MD5 digest for the file and verifies that it
+#    agrees with what's represented in the MD5 portion of the
+#    filename, renaming the file if necessary
 #
-#  - Ensures that the mtime/atime of the file's metadata agrees with
-#    what's represented in the TDS portion of the filename.
+#  - Ensures that the mtime/atime of the file's metadata agrees
+#    with what's represented in the TDS portion of the filename.
 #
 # The MD5 portion of a file's name may be changed or its timestamp
-# modified but neither the file's contents nor the tds portion of its
-# name will ever be changed.
+# modified but neither the file's contents nor the tds portion of
+# its name will ever be changed.
 #
 # NOTE: For backwards compatibility with previous (ancient, bash-coded)
 # versions that didn't care about the MD5 stuff, a filename is permitted
 # to be in simple tds form without any MD5 portion; an MD5 sum will
 # be calculated and the file renamed to have the new canonical form.
 #
-# And, yes - I know that MD5 is now regarded as being insecure because
-# various obscure flaws and exploits have been discovered, but that's
-# not a concern here.  In fact, we would be honored to discover that
-# we had one of those corner-cases and would show it off proudly...!
+# And, yes - I know that MD5 is now regarded as being insecure
+# because various exploits have been discovered re: collisions,
+# but that's not a concern in our context... :-/
 #
 
 ###############################################################################
@@ -48,8 +47,8 @@ import re
 import glob
 
 ###############################################################################
-# Defend against os.path.dirname's astonishing failure to report '.'  as
-# the directory for filenames that have no explicit directory components.
+# Defend against os.path.dirname's astonishing(!) failure to report '.'
+# as the directory for filenames that have no explicit directory components.
 #
 def saneDirname( path ) :
     if path == '' :
@@ -62,8 +61,8 @@ def saneDirname( path ) :
     return dir
 
 ###############################################################################
-# Change the mtime/atime of the specified file in accordance with the
-# ymdhms argument which is assumed to be laid out as yyyymmddhhmms.
+# Change the mtime/atime of the specified file in accordance with
+# the ymdhms argument which is assumed to be laid out as yyyymmddhhmmss.
 # Local timezone assumed.
 #
 def tdsTouch( ymdhms, fileName ) :
